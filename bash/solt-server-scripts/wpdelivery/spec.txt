@@ -1,0 +1,45 @@
+
+
+SOLT WORDPRESS DELIVERY SERVER - SPECIFICATION
+
+SOLTWP nodes are cluster nodes that can be replicated up to no realistic limit. They can run on the smallest and largest servers available from AWS (and with a little customisation, any other major cloud server provider).
+
+
+** Load Balancing **
+
+Load balancing of the SOLTWP cluster is carried out via round-robin DNS, handled by AWS Route53 DNS service.
+
+
+** Operating System **
+
+SOLTWP nodes run on the Debian Linux operating system. Debian was selected for its stability, and reputation for reliability and security. Debian's upgrade cycle is one of the longest in the software world, meaning that production releases tend to reach a very level of reliability.
+
+
+** Security and Firewall **
+
+Direct access (SSH) to a SOLTWP node is only possible with an SSH key. By default on AWS, the root user is disabled; login is by using the 'admin' username. Two other users are created, along with SSH keys for them: git and www-data. These users are used to access the SOLT GitHub repositories for deployment purposes. Access to the server is not possible with these users, and their permissions are heavily restricted.
+
+Strict firewall rules are implemented on creation of a node. Only the necessary ports are enabled, and all other ports are explicitly banned. Ports 80, 443 and 5000 are left open. Port 5000 is a custom port for SSH; using the SSH daemon with a custom port is good security practice. Port 80 is for the web server, and port 443 is for the web server running https.
+
+
+** Web Server Software **
+
+nginx serves web requests from SOLTWP nodes. nginx has achieved a reputation for performance and reliability, and powers some of highest-traffic sites in the world. Beyond its high-performance credentials, nginx is also a very capable caching layer, with various types of caching built in which can be utilised to serve WordPress in a high-performance way.
+
+PHP 5.5 or PHP 7 will be used to power WordPress, integrated with nginx via PHP-FPM. WordPress will be set up in multisite mode.
+
+
+** Caching **
+
+Multiple levels of caching will be built into the SOLTWP environment. These are all designed to provide the highest levels of performance and capacity; each SOLTWP node should be able to handle large amounts of traffic, both on-trend and on-burst. WordPress isn't - out of the box - built for high-traffic, high-availability requirements, however it is used successfully in companies with those requirements, with some adjustment.
+
+The caching layers in the SOLTWP node are as follows:
+
+1) Redis short-life MySQL query cache. WordPress is heavily dependent on MySQL, and makes many requests to the database per page load. A short-life query cache stores the results of each MySQL query in a fast-access live-memory store on the node; the next time the same query is requested, if there is a cached version available it will be returned. This provides one of the most significant performances gains for WordPress.
+
+2) PHP OpCode cache. OpCode caching has become industry practice, and has been included by default in the latest versions of PHP. OpCode caching caches the results of internal PHP workings, so that procedures that are carried out often by PHP don't have to be carried out again once cached. This is all handled by PHP.
+
+3) nginx FastCGI micro-cache. The nginx micro-cache is one of nginx's built-in cache strategies, and makes it possible to serve significantly large amounts of requests with the infrastructure available. Micro-caching stores the result of a request either in-memory or on disk for a limited amount of time, and the next request is served with that cached result. For example, requests might be stored for 60 seconds or 5 minutes, rather than a much longer term when using something like Varnish. This micro-cache strategy protects the server against large surges of traffic, and also allows the server to serve lots of requests over its normal life-cycle.
+
+
+

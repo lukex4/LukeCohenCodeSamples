@@ -1,0 +1,22 @@
+{
+  "name": "lambda-v1",
+  "version": "1.0.0",
+  "description": "### fetchFileFromUrl.js",
+  "main": "fetchFileFromUrl.js",
+  "dependencies": {
+    "aws-sdk": "^2.306.0",
+    "dotenv": "^6.0.0",
+    "fs": "^0.0.1-security",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git-codecommit.us-west-1.amazonaws.com/v1/repos/docvault-lambda"
+  },
+  "author": "",
+  "license": "ISC"
+}

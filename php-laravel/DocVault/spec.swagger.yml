@@ -1,0 +1,1205 @@
+swagger: "2.0"
+info:
+  title: DocVault-Core API Overview
+  version: '1.1'
+
+paths:
+  /nlp/file/autotag/*:
+    get:
+      summary: 'Triggers DocVault to use the document analysis class to automatically generate tags for a given File.'
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey of the File to auto-tag.'
+      responses:
+        200:
+          description: OK
+  /nlp/search/files/*:
+    get:
+      summary: 'Uses NLP to search for DocVault Files, without a userId (will return matches for all users).'
+      parameters:
+        - in: path
+          name: queryText
+          required: true
+          type: string
+          description: 'The query text for DocVaultNaturalSearch to parse and return matching files for.'
+      responses:
+        200:
+          description: OK
+  /nlp/search/files/*/*:
+    get:
+      summary: 'Uses NLP to search for DocVault Files, for specific user.'
+      parameters:
+        - in: path
+          name: queryText
+          required: true
+          type: string
+          description: 'The query text for DocVaultNaturalSearch to parse and return matching Files for.'
+        - in: path
+          name: userId
+          required: true
+          type: string
+          description: 'The userId to return matching Files for.'
+      responses:
+        200:
+          description: OK
+  /nlp/test:
+    get:
+      summary: 'NLP test route.'
+      responses:
+        200:
+          description: OK
+  /file/ingress/micro:
+    post:
+      summary: 'Accepts for ingress a microfile - a microfile will always be publicly available, without the protections that a standard DocVault File has. Microfiles are designed with small, casual use in mind, such as profile avatars and other non-sensitive images. Ingress into DocVault is a single-step, where the successful import call returns the dvKey of the new File. Microfile import accepts Base64 only, and is limited to 512kb each File. Microfiles are accessible via a permalink (described in another endpoint in this document).'
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: NewMicrofileIntent
+          description: 'The File record to create, with the Base64 encoding of the file to import to DocVault'
+          schema:
+            type: object
+            required:
+              - toUserId
+              - file
+            properties:
+              toUserId:
+                type: integer
+              application:
+                type: string
+              tags:
+                type: string
+              file:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {"file_status":"imported","dvKey":"DVF-5DAB42-78ED63-C1A871CD"}
+  /file/serve/*:
+    get:
+      summary: 'Serves a Microfile. The URL will request the service to serve the contents of the Microfile, with the relevant mimetype output as a header. Images should display as images with no further processing required.'
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey of the Microfile to serve.'
+      responses:
+        200:
+          description: OK
+  /file/ingress/s3request/*:
+    get:
+      summary: 'Prepares DocVault for direct post of a file to AWS S3 (via HTTP POST in a HTML form, or via Javascript or other language). Returns the relevant authentication tokens to allow successful HTTP POST to S3. Returns the dvKey of the new File'
+      parameters:
+        - in: path
+          name: bindToIdent
+          required: true
+          type: string
+          description: 'ID (int) of the User, or identifier (string) of the application/offering the new File will be attached to'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "policy": "ewogICAgICAgICAgICAgICAgImV4cGlyYXRpb24iOiAiMjAxOC0wOC0zMFQxMjo0NjoxMC4zNjAwWiIsCiAgICAgICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgICAgICAgICB7ImJ1Y2tldCI6ICJkb2N2YXVsdC10ZXN0In0sCiAgICAgICAgICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgImR2LTViODdjYS1mMjEyODA2LyJdLAogICAgICAgICAgICAgICAgICAgIHsiYWNsIjogInB1YmxpYy1yZWFkIn0KICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgfQ==",
+                "signature": "VTF+0IO5J+SisCCPCMTeRiaFZ3k=",
+                "awsaccesskeyid": "AKIAIYIU4LWRHN6MNXPA",
+                "dvKey": "dv-5b87ca-f212806",
+                "expires": "2018-08-30T12:46:10.3600Z",
+                "note": "a field called 'key' with 'dv-5b87ca-f212806/NAME_OF_FILE' should be included with the upload form submission"
+              }
+  /file/ingress/s3request/*/*:
+    get:
+      summary: 'Prepares DocVault for direct post of a file to AWS S3 (via HTTP POST in a HTML form, or via Javascript or other language). Returns the relevant authentication tokens to allow successful HTTP POST to S3. Returns the dvKey of the new File'
+      parameters:
+        - in: path
+          name: bindToIdent
+          required: true
+          type: string
+          description: 'ID (int) of the User, or identifier (string) of the application/offering the new File will be attached to'
+        - in: path
+          name: tags
+          required: true
+          type: string
+          description: 'Comma-delimited string of tags to add to the inbound file'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "policy": "ewogICAgICAgICAgICAgICAgImV4cGlyYXRpb24iOiAiMjAxOC0wOC0zMFQxMjo0NjoxMC4zNjAwWiIsCiAgICAgICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgICAgICAgICB7ImJ1Y2tldCI6ICJkb2N2YXVsdC10ZXN0In0sCiAgICAgICAgICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgImR2LTViODdjYS1mMjEyODA2LyJdLAogICAgICAgICAgICAgICAgICAgIHsiYWNsIjogInB1YmxpYy1yZWFkIn0KICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgfQ==",
+                "signature": "VTF+0IO5J+SisCCPCMTeRiaFZ3k=",
+                "awsaccesskeyid": "AKIAIYIU4LWRHN6MNXPA",
+                "dvKey": "dv-5b87ca-f212806",
+                "expires": "2018-08-30T12:46:10.3600Z",
+                "note": "a field called 'key' with 'dv-5b87ca-f212806/NAME_OF_FILE' should be included with the upload form submission"
+              }
+  /file/ingress/version/s3request:
+    post:
+      summary: 'Imports a new version of a given File (by dvKey), via S3 POST route.'
+      parameters:
+        - in: body
+          name: NewVersionIntent
+          description: 'The File record to create, and the URL of the file to import to DocVault'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - bearerToken
+            properties:
+              dvKey:
+                type: string
+              bearerToken:
+                type: string
+              tags:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "policy": "ewogICAgICAgICAgICAgICAgImV4cGlyYXRpb24iOiAiMjAxOC0wOC0zMFQxMjo0NjoxMC4zNjAwWiIsCiAgICAgICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgICAgICAgICB7ImJ1Y2tldCI6ICJkb2N2YXVsdC10ZXN0In0sCiAgICAgICAgICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgImR2LTViODdjYS1mMjEyODA2LyJdLAogICAgICAgICAgICAgICAgICAgIHsiYWNsIjogInB1YmxpYy1yZWFkIn0KICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgfQ==",
+                "signature": "VTF+0IO5J+SisCCPCMTeRiaFZ3k=",
+                "awsaccesskeyid": "AKIAIYIU4LWRHN6MNXPA",
+                "dvKey": "dv-5b87ca-f212806",
+                "expires": "2018-08-30T12:46:10.3600Z",
+                "note": "a field called 'key' with 'dv-5b87ca-f212806/NAME_OF_FILE' should be included with the upload form submission"
+              }
+  /file/ingress/s3-defer/*:
+    get:
+      summary: 'Enables future ingress-by-S3-POST. Returns a dvKey and a deferredKey, which when passed to /file/ingress/s3-deferred/*/*, will return the signed S3 keys to upload.'
+      parameters:
+        - in: path
+          name: bindToIdent
+          required: true
+          type: string
+          description: 'ID (int) of the User, or identifier (string) of the application/offering the new File will be attached to'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey": "DVF-81B8F8-CD4F9B-47DD2A8B",
+                "deferredToken": "a039d70f3393bb2e7b6522d5a66738337b5291be81e62c603f283189456bfd3a7f5b1411d67602e31132180936d1bac7e327ea0b2917a3bac883c9096c6d6c61"
+              }
+  /file/ingress/s3-deferred/*/*:
+    get:
+      summary: 'Requests the signed S3 upload tokens for a previously deferred dvKey request.'
+      parameters:
+        - in: path
+          name: deferredDvKey
+          required: true
+          type: string
+          description: 'The dvKey of the deferred File record'
+        - in: path
+          name: deferredToken
+          required: true
+          type: string
+          description: 'The deferredToken that was provided when the deferred File record was created'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "policy": "ewogICAgICAgICAgICAgICAgImV4cGlyYXRpb24iOiAiMjAxOC0wOC0zMFQxMjo0NjoxMC4zNjAwWiIsCiAgICAgICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgICAgICAgICB7ImJ1Y2tldCI6ICJkb2N2YXVsdC10ZXN0In0sCiAgICAgICAgICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgImR2LTViODdjYS1mMjEyODA2LyJdLAogICAgICAgICAgICAgICAgICAgIHsiYWNsIjogInB1YmxpYy1yZWFkIn0KICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgfQ==",
+                "signature": "VTF+0IO5J+SisCCPCMTeRiaFZ3k=",
+                "awsaccesskeyid": "AKIAIYIU4LWRHN6MNXPA",
+                "dvKey": "dv-5b87ca-f212806",
+                "expires": "2018-08-30T12:46:10.3600Z",
+                "note": "a field called 'key' with 'dv-5b87ca-f212806/NAME_OF_FILE' should be included with the upload form submission"
+              }
+  /file/ingress/fromurl:
+    post:
+      summary: 'Instructs DocVault to create a new File record and import the described file from the Internet, given a valid URL, and attach it to the DocVault File record. DocVault can import files from URL up to 512mb. File can be bound to a User (userId, int) or an application/offering (applicationIdent, string).'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewFileIntent
+          description: 'The File record to create, and the URL of the file to import to DocVault'
+          schema:
+            type: object
+            required:
+              - fileUrl
+            properties:
+              fileUrl:
+                type: string
+              toUserId:
+                type: integer
+              applicationIdent:
+                type: string
+              tags:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "queuedForIngress",
+                "dvKey": "DVF-C5FBC9-2A2D44-F2742665"
+              }
+  /file/ingress/version/fromurl:
+    post:
+      summary: 'Imports new version of a File, by URL.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewVersionIntent
+          description: 'The details of the File version to import.'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - bearerToken
+              - fileUrl
+            properties:
+              dvKey:
+                type: string
+              bearerToken:
+                type: string
+              fileUrl:
+                type: string
+              tags:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "queuedForIngress",
+                "dvKey": "DVF-C5FBC9-2A2D44-F2742665"
+              }
+  /file/ingress/newstatus:
+    post:
+      summary: 'Allows the DocVault Lambda functions to update DocVault-Core on the status of a file upload/import.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: FileStatusIntent
+          description: 'The new status, mime-type, and filename of the new File.'
+          schema:
+            type: object
+            required:
+              - fileUrl
+            properties:
+              dvkey:
+                type: string
+              filename:
+                type: string
+              mimetype:
+                type: string
+              status:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "status": "update received"
+              }
+  /file/meta/list/*:
+    get:
+      summary: 'Lists all available metadata for a given dvKey.'
+      consumes: [application/json]
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey to list metadata for'
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              [
+                {
+                  "dvkey": "DVF-ADFA1A-26C10D-929E3A9E",
+                  "metakey": "meta_1",
+                  "metadata": "example metadata",
+                  "created_at": "2018-11-30 12:09:02",
+                  "updated_at": "2018-11-30 12:09:43"
+                }
+              ]
+
+  /file/meta/get/*/*:
+    get:
+      summary: 'Retrieves the metadata for a given dvKey/metaKey combination.'
+      consumes: [application/json]
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey of the metaData being queried'
+        - in: path
+          name: metaKey
+          required: true
+          type: string
+          description: 'The metaKey of the metaData being queried'
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "metadata": {
+                  "dvkey": "DVF-ADFA1A-26C10D-929E3A9E",
+                  "metakey": "meta_1",
+                  "metadata": "overwritten",
+                  "created_at": "2018-11-30 12:09:02",
+                  "updated_at": "2018-11-30 12:09:43"
+                }
+              }
+
+  /file/meta/set:
+    post:
+      summary: 'Create or overwrite a metadata item for a given File.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: MetaSetIntent
+          description: 'The new metadata to be set. The metadata value can hold up to 4gb of data.'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - metaKey
+              - newMetaData
+            properties:
+              dvKey:
+                type: string
+              metaKey:
+                type: string
+              newMetaData:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Metadata created/updated for DVF-ADFA1A-26C10D-929E3A9E:meta_1"
+              }
+
+  /file/meta/delete:
+    delete:
+      summary: 'Deletes a metadata item.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: MetaDeleteIntent
+          description: 'The new status, mime-type, and filename of the new File.'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - metaKey
+            properties:
+              dvKey:
+                type: string
+              metaKey:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Metadata deleted for DVF-ADFA1A-26C10D-929E3A9E:meta_2"
+              }
+
+
+  /file/versions/*:
+    get:
+      summary: 'Lists all/any available version of a given File.'
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey to query'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+                {
+                  "dvKey": "DVF-990853-12DA9C-0A6E523B",
+                  "highest_version": 4,
+                  "versions": [
+                      {
+                          "version_no": 1,
+                          "filename": "range-rover-phev-media-drive-march-2018.jpg",
+                          "added_timestamp": "0000-00-00 00:00:00"
+                      },
+                      {
+                          "version_no": 2,
+                          "filename": "range-rover-phev-media-drive-march-2018-black.jpg",
+                          "added_timestamp": "0000-00-00 00:00:00"
+                      },
+                      {
+                          "version_no": 3,
+                          "filename": "range-rover-phev-media-drive-march-2018-silver.jpg",
+                          "added_timestamp": "0000-00-00 00:00:00"
+                      },
+                      {
+                          "version_no": 4,
+                          "filename": "range-rover-phev-media-drive-march-2018-white.jpg",
+                          "added_timestamp": "0000-00-00 00:00:00"
+                      }
+                  ]
+                }
+  /file/rename:
+    post:
+      summary: Rename a File
+      parameters:
+        - in: body
+          name: RenameFileIntent
+          description: 'The File dvKey, and the new target name'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - filenameNew
+            properties:
+              dvKey:
+                type: string
+              filenameNew:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey":"DVF-211B7C-0455B6-7A214069",
+                "response":"filenameUpdateComplete"
+              }
+  /file/delete:
+    delete:
+      summary: Delete a File
+      parameters:
+        - in: body
+          name: DeleteFileIntent
+          description: 'The File record to delete. Note, this action cannot be reversed'
+          schema:
+            type: object
+            required:
+              - dvKey
+            properties:
+              dvKey:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "File DVF-C5FBC9-2A2D44-F2742665 deleted"
+              }
+  /file/delete-multiple:
+    delete:
+      summary: Delete multiple Files
+      parameters:
+        - in: body
+          name: DeleteFilesIntent
+          description: 'The File records to delete, to a maximum of 25.'
+          schema:
+            type: object
+            required:
+              - filesToDelete
+            properties:
+              filesToDelete:
+                type: string
+                description: dvKeys delimited by a comma
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "File DVF-C5FBC9-2A2D44-F2742665 deleted"
+              }
+  /file/bydvkey/*:
+    get:
+      summary: Retrieves the File model instance by the given dvKey
+      parameters:
+        - in: path
+          name: dvKey
+          type: string
+          required: true
+          description: dvKey of the File to retrieve
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "file": {
+                  "dvKey":"DVF-15CB15-38A57E-D680725E",
+                  "filename":"testfile.txt",
+                  "ingress_status":"complete",
+                  "tags":"",
+                  "userid":55,
+                  "created_at":"2018-08-29 13:45:16",
+                  "updated_at":"2018-08-29 13:46:16",
+                  "inpath":""
+                }
+              }
+  /file/bydvkey/*/*:
+    get:
+      summary: Retrieves the File model instance by the given dvKey, for a specific version (second parameter)
+      parameters:
+        - in: path
+          name: dvKey
+          type: string
+          required: true
+          description: dvKey of the File to retrieve
+        - in: path
+          name: versionNo
+          type: integer
+          required: true
+          description: Version number to retrieve
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "file": {
+                  "dvKey":"DVF-15CB15-38A57E-D680725E",
+                  "filename":"testfile.txt",
+                  "ingress_status":"complete",
+                  "tags":"",
+                  "userid":55,
+                  "created_at":"2018-08-29 13:45:16",
+                  "updated_at":"2018-08-29 13:46:16",
+                  "inpath":""
+                }
+              }
+  /file/qr/*:
+    get:
+      summary: Displays an SVG QR code which can be used as a reference to the File
+      parameters:
+        - in: path
+          name: dvKey
+          type: string
+          required: true
+          description: dvKey of the File to generate QR code for
+      produces:
+        - image/svg+xml
+      responses:
+        200:
+          description: OK
+          examples:
+            image/svg+xml: |-
+  /file/list/userid/*/*:
+    get:
+      summary: Lists all Files for a given userId
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: userId to query Files by
+        - in: path
+          name: tag
+          type: string
+          required: true
+          description: Optional parameter to filter results by tag
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              [
+                {
+                  "dvKey": "DVF-15CB15-38A57E-D680725E",
+                  "filename": "photo1.jpg",
+                  "ingress_status": "complete",
+                  "tags": "photos,team",
+                  "userid": 55,
+                  "created_at": "2018-08-28 17:11:28",
+                  "updated_at": "2018-08-28 17:11:28"
+                },
+                {
+                  "dvKey": "DVF-15CB15-38A57E-D680725E",
+                  "filename": "testfile.txt",
+                  "ingress_status": "complete",
+                  "tags": "",
+                  "userid": 55,
+                  "created_at": "2018-08-29 13:45:16",
+                  "updated_at": "2018-08-29 13:46:16"
+                }
+              ]
+  /file/release/*:
+    get:
+      summary: Authorises the release of a File and provides a time-limited authenticated & signed download URL
+      parameters:
+        - in: path
+          name: dvKey
+          type: string
+          required: true
+          description: dvKey of the File to release
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey": "DVF-15CB15-38A57E-D680725E",
+                "fileUrl": "https:\/\/s3-us-west-1.amazonaws.com\/docvault-test\/dv-5b8695-5c4df69\/testfile.txt"
+              }
+  /file/tags/*:
+    get:
+      summary: 'Returns the tags currently assigned to the given File, by dvKey'
+      parameters:
+        - in: path
+          name: dvKey
+          type: string
+          required: true
+          description: dvKey of the File to query
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey":"DVF-15CB15-38A57E-D680725E",
+                "tags":"ferrari,gold"
+              }
+  /file/tags/set:
+    post:
+      summary: Set the tags for a given file. Tags should be provided in a comma-delimited string
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewTagsIntent
+          description: 'The comma-delimited list of tags which will replace the current tags of the File. If editing, the tags that are not being changed should be included in the tags string, as this operation replaces the current tags list in its entirety'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - newTags
+            properties:
+              dvKey:
+                type: string
+              newTags:
+                type: string
+              versionNo:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey": "DVF-15CB15-38A57E-D680725E",
+                "response": "tagUpdateComplete"
+              }
+  /file/description/set:
+    post:
+      summary: Set the description for a given file
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewDescriptionIntent
+          description: 'The string representing the File description to be applied'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - newDescription
+            properties:
+              dvKey:
+                type: string
+              newDescription:
+                type: string
+              versionNo:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "dvKey": "DVF-15CB15-38A57E-D680725E",
+                "response": "descriptionUpdateComplete"
+              }
+  /file/search/{searchTerm}/*:
+    get:
+      summary: 'Returns File and Path results matching the search term, with an optional restraint by User (int userId)'
+      parameters:
+        - in: path
+          name: searchTerm
+          type: string
+          required: true
+          description: The search term - a minimum of 3 characters is required
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: 'Optional userId, if search should be restrained to a single User''s Files and Paths'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "search": {
+                  "query": "photo",
+                  "userId": 4
+                },
+                "results": {
+                  "files": [
+                    {
+                      "dvKey": "DVF-34F7DB-63AF7E-111D78CA",
+                      "filename": "photo-494030.jpg",
+                      "mimetype": "image\/jpeg",
+                      "ingress_status": "complete",
+                      "tags": "",
+                      "userid": 4,
+                      "created_at": "2018-09-18 11:52:34",
+                      "updated_at": "2018-09-18 11:52:38",
+                      "inpath": "",
+                      "application": ""
+                    }
+                  ],
+                  "paths": [
+                    {
+                      "foldername": "photos",
+                      "fullpath": "\/photos",
+                      "userid": 4,
+                      "created_at": "2018-09-10 12:22:13",
+                      "updated_at": "2018-09-10 12:22:13",
+                      "pathident": "DVP-392C4DDA-DEC93A78",
+                      "description": ""
+                    }
+                  ]
+                }
+              }
+  /path/create:
+    post:
+      summary: 'Creates a new Path (pseudo-folder) for a given User. New Paths creation is recursive, and DocVault will attempt to create each folder part in the provided ''newfullpath'''
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewPathIntent
+          description: The userId of the relevant User and the newfullpath to create for that user
+          schema:
+            type: object
+            required:
+              - userId
+              - newfullpath
+            properties:
+              userId:
+                type: integer
+              newfullpath:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "path successfully created",
+                "details": "new path: /home/etc/books"
+              }
+  /path/edit:
+    post:
+      summary: 'Rename a Path'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: EditPathIntent
+          description: The details of the Path to rename, and the Path's new name
+          schema:
+            type: object
+            required:
+              - pathident
+              - newpath
+              - fullpath
+              - userid
+            properties:
+              pathident:
+                type: string
+              newpath:
+                type: string
+              fullpath:
+                type: string
+              userid:
+                type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Path updated"
+              }
+  /path/move:
+    post:
+      summary: 'Moves a Path'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: MovePathIntent
+          description: The details of the Path to move, and the Path's new parent Path
+          schema:
+            type: object
+            required:
+              - pathIdent
+              - destPathIdent
+            properties:
+              pathIdent:
+                type: string
+              destPathIdent:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Path moved",
+                "new fullpath": "/the/new/path"
+              }
+  /path/delete:
+    delete:
+      summary: 'Deletes a Path'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: DeletePathIntent
+          description: The details of the Path to delete
+          schema:
+            type: object
+            required:
+              - pathIdent
+            properties:
+              pathIdent:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Path deleted"
+              }
+  /path/list/*/*:
+    get:
+      summary: 'Returns all the Paths of a given User, by userId. No File pointers are returned as part of this call; the /path/ls call returns both Paths and Files'
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: userId of the User to list Paths for
+        - in: path
+          name: basePath
+          type: string
+          required: true
+          description: Optional starting point (represented by a pathIdent starting DVP-...) from which to list contents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "paths": [
+                  {
+                    "pathident": "DVP-923C7912-1C2B0BEB",
+                    "foldername": "documents",
+                    "fullpath": "\/documents",
+                    "description": "",
+                    "created": "2018-08-29 15:15:16"
+                  },
+                  {
+                    "pathident": "DVP-923C7912-1C2B0BEB",
+                    "foldername": "documents",
+                    "fullpath": "\/documents\/contracts",
+                    "description": "",
+                    "created": "2018-08-29 15:15:16"
+                  }
+                ]
+              }
+  /path/quicklink/set/*:
+    get:
+      summary: 'Flags a Path as a quicklink'
+      parameters:
+        - in: path
+          name: pathIdent
+          type: string
+          required: true
+          description: Unique identifier of the Path to flag as a quick-link
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Path/quicklink update successful"
+              }
+  /path/quicklink/unset/*:
+    get:
+      summary: 'Removes the quicklink flag from a Path'
+      parameters:
+        - in: path
+          name: pathIdent
+          type: string
+          required: true
+          description: Unique identifier of the Path to remove quicklink flag from
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Path/quicklink update successful"
+              }
+  /path/quicklink/list/*:
+    get:
+      summary: 'Lists all quicklinks for the given userId'
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+          description: User ID to return quicklinks listing
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "quicklinks": ""
+              }
+  /path/ls/*:
+    get:
+      summary: 'Returns all Files and Paths for the given User, with optional base Path as starting-point for listing. If no basePath is provided, the User''s root (''/'') Path will be listed. This call will return any child Paths of the basePath, and any Files inside that Path'
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: userId of the User to list Files and Paths for
+        - in: path
+          name: basePath
+          type: string
+          required: true
+          description: Optional starting point (represented by a pathIdent starting DVP-...) from which to list contents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "path": "\/documents",
+                "files": [
+                  {
+                    "dvKey": "DVF-233D60-340B5F-50A00C25",
+                    "filename": "lemons.png",
+                    "mimetype": "image\/png",
+                    "ingress_status": "complete",
+                    "tags": "",
+                    "userid": 200,
+                    "created_at": "2018-09-18 15:47:50",
+                    "updated_at": "2018-09-18 15:48:40",
+                    "inpath": "DVP-923C7912-1C2B0BEB"
+                  }
+                ],
+                "subpaths": [
+                  {
+                    "foldername": "tests",
+                    "fullpath": "\/documents\/tests",
+                    "userid": 200,
+                    "created_at": "2018-09-18 15:18:11",
+                    "updated_at": "2018-09-18 15:18:11",
+                    "pathident": "DVP-8B92756B-47D22A38",
+                    "description": ""
+                  }
+                ]
+              }
+  /path/ls/*/*:
+    get:
+      summary: 'Returns all Files and Paths for the given User, with optional base Path as starting-point for listing. If no basePath is provided, the User''s root (''/'') Path will be listed. This call will return any child Paths of the basePath, and any Files inside that Path'
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: userId of the User to list Files and Paths for
+        - in: path
+          name: basePath
+          type: string
+          required: true
+          description: Optional starting point (represented by a pathIdent starting DVP-...) from which to list contents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "path": "\/documents",
+                "files": [
+                  {
+                    "dvKey": "DVF-233D60-340B5F-50A00C25",
+                    "filename": "lemons.png",
+                    "mimetype": "image\/png",
+                    "ingress_status": "complete",
+                    "tags": "",
+                    "userid": 200,
+                    "created_at": "2018-09-18 15:47:50",
+                    "updated_at": "2018-09-18 15:48:40",
+                    "inpath": "DVP-923C7912-1C2B0BEB"
+                  }
+                ],
+                "subpaths": [
+                  {
+                    "foldername": "tests",
+                    "fullpath": "\/documents\/tests",
+                    "userid": 200,
+                    "created_at": "2018-09-18 15:18:11",
+                    "updated_at": "2018-09-18 15:18:11",
+                    "pathident": "DVP-8B92756B-47D22A38",
+                    "description": ""
+                  }
+                ]
+              }
+  /path/description/set:
+    post:
+      summary: Set the description for a given path
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewDescriptionIntent
+          description: 'The string representing the new description to be applied to a Path'
+          schema:
+            type: object
+            required:
+              - pathIdent
+              - newDescription
+            properties:
+              pathIdent:
+                type: string
+              newDescription:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "update complete"
+              }
+  /path/tags/set:
+    post:
+      summary: Set the tags for a given path. Tags should be provided in a comma-delimited string
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewTagsIntent
+          description: 'The comma-delimited list of tags which will replace the current tags of the Path. If editing, the tags that are not being changed should be included in the tags string, as this operation replaces the current tags list in its entirety'
+          schema:
+            type: object
+            required:
+              - pathIdent
+              - newTags
+            properties:
+              pathIdent:
+                type: string
+              newTags:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "update complete"
+  /file/topath:
+    post:
+      summary: 'Attaches a File to a Path, moving a file'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: NewFilePathIntent
+          description: 'The dvKey of the File, and the full target path. The target path must already exist for the User who owns the File. ''targetpath'' should be provided as a pathIdent starting DVP-...'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - targetpath
+            properties:
+              dvKey:
+                type: string
+              targetpath:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "File moved successfully"
+              }

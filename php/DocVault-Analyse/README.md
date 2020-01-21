@@ -1,0 +1,1 @@
+**DV-A extracts many different types of data from English-language text. This has been used, for example, in an application that uses a camera's phone to detect what kind of legal document the person is looking at**

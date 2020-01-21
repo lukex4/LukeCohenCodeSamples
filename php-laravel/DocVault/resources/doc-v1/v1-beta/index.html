@@ -1,0 +1,326 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>DocVault v1.0-Beta Documentation</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-3">
+
+                <div class="list-group sticky-top">
+                  <div class="list-group-item"><strong>DocVault v1.0-Beta Developer Guide</strong></div>
+                  <a href="#import-post" class="list-group-item list-group-item-action">&bull; Import a file via HTTP POST &raquo;</a>
+                  <a href="#import-url" class="list-group-item list-group-item-action">&bull; Import a file by URL &raquo;</a>
+                  <a href="#list-user" class="list-group-item list-group-item-action">&bull; List all files for a user &raquo;</a>
+                  <a href="#file" class="list-group-item list-group-item-action">&bull; Load file details &raquo;</a>
+                  <a href="#release" class="list-group-item list-group-item-action">&bull; Request file release URL &raquo;</a>
+                  <a href="#delete" class="list-group-item list-group-item-action">&bull; Delete a file &raquo;</a>
+                  <a href="#tags" class="list-group-item list-group-item-action">&bull; Set tags on a file &raquo;</a>
+                </div>
+
+            </div>
+
+            <div class="col-sm-9">
+
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">NOTES</h5>
+                    <p class="card-text">DocVault is a beta product which fulfils its requirements at this stage. As such, there may be missing or incomplete functionality. Bugs or feature requests should be reported to Luke Cohen via Slack.</p>
+
+                    <h6>API Base URL</h6>
+                    <p class="card-text">All URLs referenced here are sub-paths to a Base URL which may change from time to time as development progresses. The Base URL is available from the London development team.</p>
+                  </div>
+                </div>
+
+                <a name="import-post"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Import a file via HTTP POST</h5>
+                    <p class="card-text">DocVault accepts HTTP files uploads via Amazon S3. This requires two steps, the first requests authentication keys, and the second uploads the file. DocVault can import files up to 5gb.</p>
+
+                    <hr />
+
+                    <h6>1. Request authentication keys</h6>
+                    <p class="card-text"><span class="badge badge-success">HTTP GET</span> /file/ingress/s3request/{userId}</p>
+
+                    <p class="card-text">
+                        This will return a JSON object containing the dv-key for the file you're about to upload, as well as the authentication tokens to enable the upload to AWS S3.
+                    </p>
+
+                    <pre>
+{
+    "policy": "ewogICAgICAgICAgICAgICAgImV4cGlyYXRpb24iOiAiMjAxOC0wOS0xM1QwMjo0NzowMC4zNjAwWiIsCiAgICAgICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgICAgICAgICB7ImJ1Y2tldCI6ICJkb2N2YXVsdC10ZXN0In0sCiAgICAgICAgICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgIkRWRi1CQjE4RTgtNTVDQ0ZDLUVBNzNGM0M1LyJdLAogICAgICAgICAgICAgICAgICAgIHsiYWNsIjogInB1YmxpYy1yZWFkIn0KICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgfQ==",
+    "signature": "vrDDjlAj3wDxEXzCC3wN82ahBjY=",
+    "awsaccesskeyid": "AKIAIYIU4LWRHN6MNXPA",
+    "dvkey": "DVF-BB18E8-55CCFC-EA73F3C5",
+    "expires": "2018-09-13T02:47:00.3600Z",
+    "note": "a field called 'key' with 'DVF-BB18E8-55CCFC-EA73F3C5/NAME_OF_FILE' should be included with the upload form submission"
+}</pre>
+
+                    <hr />
+
+                    <h6>2. Make HTTP POST (HTML form, Javascript, other)</h6>
+                    <p class="card-text"><span class="badge badge-primary">HTTP POST</span>  https://s3-us-west-1.amazonaws.com/docvault-test</p>
+
+                    <p class="card-text">
+                        Using the keys received in step 1., make your POST submission, using "multipart/form-data" encoding. The form, or Javascript/other post data must include the following fields (case-sensitive):
+                    </p>
+
+                    <ul>
+                        <li>key</li>
+                        <li>acl</li>
+                        <li>AWSAccessKeyId</li>
+                        <li>policy</li>
+                        <li>signature</li>
+                        <li>file</li>
+                    </ul>
+
+                    <p class="card-text">
+                        The "key" field should start with the dv-key provided in step 1., followed by a forward-slash, followed by the name of the file being uploaded. The other fields should map the values of the data returned in step 1.
+                    </p>
+
+                    <p class="card-text">
+                        The file field should contain the actual file being uploaded.
+                    </p>
+
+                    <hr />
+
+                    <p class="card-text">
+                        <em>When the upload completes, you can check its status by loading the file details using a separate API call.</em>
+                    </p>
+
+                  </div>
+                </div>
+
+
+                <a name="import-url"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Import a file by URL</h5>
+
+                    <p class="card-text">
+                        DocVault can import a file by URL, for example as the result of an API call, or from a batch of documents to import.
+                    </p>
+
+                    <p class="card-text"><span class="badge badge-primary">HTTP POST</span> /file/ingress/fromurl</p>
+
+                    <span class="badge badge-secondary">Request</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "fileUrl":"http://www.ilondonchauffeur.co.uk/images/j3.jpg",
+    "toUserId":2049,
+    "tags":"photos,cars"
+}</pre>
+                    </p>
+
+                    <hr />
+
+                    <p class="card-text">
+                        The file will be processed by DocVault, which depending on its size and other factors, may be nearly instant or require several seconds or minutes to complete ingress. However as soon as you submit the request you will be given the new file's dv-key, which can be used to check the status of the ingress.
+                    </p>
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "response": "queuedForIngress",
+    "dvFileKey": "DVF-F5E29C-D5467E-2FF5CC23"
+}</pre>
+                    </p>
+
+                  </div>
+                </div>
+
+
+                <a name="list-user"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">List all files for a user</h5>
+                    <p class="card-text">Returns all files for a given user, by userId (Integer).</p>
+
+                    <p class="card-text"><span class="badge badge-success">HTTP GET</span> /file/list/userid/{userId}</p>
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "docvaultkey": "DVF-FAAEA8-BEA047-9327E631",
+    "filename": "justice-2060093_1280.jpg",
+    "mimetype": "image/jpeg",
+    "ingress_status": "complete",
+    "tags": "tag",
+    "userid": 1,
+    "added_timestamp": "0000-00-00 00:00:00",
+    "created_at": "2018-09-11 15:15:21",
+    "updated_at": "2018-09-11 15:15:23",
+    "inpath": ""
+},
+{
+    "docvaultkey": "DVF-61367E-6B35FC-9327E631",
+    "filename": "videoblocks-statue-of-lady-justice-with-clouds-passing_hdv465zmz_thumbnail-full01.png",
+    "mimetype": "image/png",
+    "ingress_status": "complete",
+    "tags": "tag",
+    "userid": 1,
+    "added_timestamp": "0000-00-00 00:00:00",
+    "created_at": "2018-09-11 15:15:21",
+    "updated_at": "2018-09-11 15:15:22",
+    "inpath": ""
+}</pre>
+                    </p>
+
+                  </div>
+                </div>
+
+
+                <a name="file"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Load file details</h5>
+                    <p class="card-text">Returns a file's details and ingress status.</p>
+
+                    <p class="card-text"><span class="badge badge-success">HTTP GET</span> /file/bydvkey/{dv-key}</p>
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "file": {
+        "docvaultkey": "DVF-0FE3F8-42B2D5-AEEA34EE",
+        "filename": "j3.jpg",
+        "mimetype": "image/jpeg",
+        "ingress_status": "complete",
+        "tags": "photos,cars",
+        "userid": 2049,
+        "added_timestamp": "0000-00-00 00:00:00",
+        "created_at": "2018-09-12 12:00:39",
+        "updated_at": "2018-09-12 12:00:46",
+        "inpath": ""
+    }
+}</pre>
+                </p>
+
+                  </div>
+                </div>
+
+
+                <a name="release"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Request file release URL</h5>
+                    <p class="card-text">A secure, cryptographically signed URL must be generated by DocVault in order to authorise a file download. The generated URL is valid for 12 hours only.</p>
+
+                    <p class="card-text"><span class="badge badge-success">HTTP GET</span> /file/release/{dv-key}</p>
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "fileKey": "DVF-0FE3F8-42B2D5-AEEA34EE/rat.jpg",
+    "fileUrl": "https://s3-us-west-1.amazonaws.com/docvault-test/DVF-0FE3F8-42B2D5-AEEA34EE/rat.jpg?AWSAccessKeyId=AKIAIYIU4LWRHN6MNXPA&Expires=1536839179&Signature=%2F2tjDMQ3NkNiIVtAQSQNnqaMxeE%3D"
+}</pre>
+                </p>
+
+                  </div>
+                </div>
+
+
+                <a name="delete"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Delete a file</h5>
+                    <p class="card-text">This is a non-reversible action.</p>
+
+                    <p class="card-text"><span class="badge badge-danger">HTTP DELETE</span> /file/delete</p>
+
+                    <span class="badge badge-secondary">Request</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "dvKey":"DVF-0FE3F8-42B2D5-AEEA34EE"
+}</pre>
+                    </p>
+
+                    <hr />
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "response":"File DVF-0FE3F8-42B2D5-AEEA34EE deleted"
+}</pre>
+                    </p>
+
+                  </div>
+                </div>
+
+
+                <a name="tags"></a>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Set tags on a file</h5>
+                    <p class="card-text">A file can be tagged with multiple tags, that should be provided in a comma-delimited string.</p>
+
+                    <p class="card-text">NOTE: The tags provided in 'tags' in your request will replace the tags already held for the file. Your application should use relevant logic to add a single tag, or remove a single tag (or whatever action you wish to carry out), and provide a new complete tags list.</p>
+
+                    <p class="card-text"><span class="badge badge-primary">HTTP POST</span> /file/tags/set</p>
+
+                    <span class="badge badge-secondary">Request</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "dvKey":"DVF-0FE3F8-42B2D5-AEEA34EE",
+    "tags":"photos,cars"
+}</pre>
+                    </p>
+
+                    <hr />
+
+                    <span class="badge badge-secondary">Response</span>
+
+                    <p class="card-text">
+                        <pre>
+{
+    "dvKey":"DVF-0FE3F8-42B2D5-AEEA34EE",
+    "response":"tagUpdateComplete"
+}</pre>
+                    </p>
+
+                  </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

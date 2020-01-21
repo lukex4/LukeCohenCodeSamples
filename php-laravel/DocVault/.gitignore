@@ -1,0 +1,16 @@
+#/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+/.volumes
+Dockerfile
+docker-compose.yml
+apache.conf
+Dockerfile
+g-dock.sh
+.dockerignore
+.env-gdock
+lz-ec2-main.pem
+#git-pull.sh
+deploy
+.env-2

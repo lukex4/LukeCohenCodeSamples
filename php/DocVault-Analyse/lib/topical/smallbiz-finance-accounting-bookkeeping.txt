@@ -1,0 +1,340 @@
+account payable
+accounts payable
+account receivable
+accounts receivable
+accountancy firm
+accountancy profession
+accounting
+accounting equation
+accounting period
+accounting policies
+accounting standards
+Accounting Standards Board
+accruals basis
+accumulated depreciation
+acid test
+acquiree
+acquirer
+acquisition
+acquisition method
+administrative expenses
+agency
+agency theory
+aggregate depreciation
+allocate
+allocated
+amortisation
+annual report
+articles of association
+articulation
+assets
+associated company
+audit
+audit manager
+bad debt
+balance sheet
+bank facility
+bond
+broker
+broker's report
+business combination
+business cycle
+business entity
+called up
+capital
+capital expenditure
+capitalisation issue
+cash
+cash equivalents
+cash flow projections
+cash flow statement
+chairman
+charge
+chief executive
+close season
+commercial paper
+Companies Act
+comparability
+completeness
+conceptual framework
+conservatism
+consistency
+consolidated financial statements
+consolidation
+contingent liabilities
+control
+convertible loan
+corporate governance
+corporate recovery department
+corporate social responsibility
+corporation tax
+cost
+cost of goods sold
+cost of sales
+coupon
+credit
+credit note
+credit purchase
+credit sale
+creditor
+critical event
+current asset
+current liability
+current value
+customers' collection period
+cut-off procedures
+debenture
+debtor
+deep discount bond
+default
+deferred asset
+deferred income
+deferred taxation
+depreciable amount
+depreciation
+derecognition
+difference on consolidation
+direct method
+Directive
+director
+disclosed
+discount received
+dividend
+dividend cover
+dividend yield
+doubtful debts
+drawings
+earnings for ordinary shareholders
+earnings per share
+effective interest rate
+efficient markets hypothesis
+endorsed
+endorsement
+enterprise
+entity
+entry price
+equities analyst
+equity
+equity accounting
+equity interest
+equity portfolio
+equity shares
+eurobond market
+exit price
+exit value
+expense
+external reporting
+external users
+fair value
+faithful presentation
+financial accounting
+financial adaptability
+financial gearing
+financial information
+Financial Reporting Standard
+financial risk
+financial statements
+financial viability
+financing activities
+fixed asset
+fixed assets
+fixed assets usage
+fixed capital
+fixed cost
+floating charge
+forecast
+format
+forward exchange contract
+fully paid
+fund manager
+gearing
+general purpose financial statements
+going concern basis
+goodwill
+gross
+gross margin
+gross margin ratio
+gross profit
+group
+highlights statement
+historical cost
+HM Revenue and Customs
+IAS
+IASB
+IASB system
+IFRS
+impairment
+impairment review
+impairment test
+improvement
+income statement
+incorporation
+indirect method
+insider information
+institutional investor
+intangible
+interest
+interim reports
+internal reporting
+inventory
+investing activities
+investors
+joint and several liability
+key performance indicators
+leasing
+legal form
+leverage
+liabilities
+limited liability
+limited liability company
+liquidity
+listed company
+listing requirements
+Listing Rules
+loan covenants
+loan notes
+loan stock
+long-term finance
+management
+management accounting
+market value
+marking to market
+margin
+materiality
+maturity
+maturity profile of debt
+memorandum
+merger
+minority interest
+net
+net assets
+net book value
+net profit
+net realisable value
+neutral
+nominal value
+non-controlling interest
+non-current assets
+non-current liabilities
+notes to the accounts
+off-balance-sheet finance
+offer for sale
+operating activities
+operating and financial review
+operating gearing
+operating margin
+operating risk
+ordinary shares
+ownership interest
+par value
+parent company
+partnership
+partnership deed
+partnership law
+portfolio
+portfolio of shares
+preference shares
+preliminary announcement
+premium
+prepayment
+present fairly
+price to earnings ratio
+price-sensitive information
+primary financial statements
+principal
+private limited company
+production overhead costs
+profit
+profit and loss account
+prospective investor
+prospectus
+provision
+provision for doubtful debts
+prudence
+public limited company
+purchase method
+purchases
+qualified audit opinion
+quality of earnings
+quoted company
+long-term liabilities
+realised profit
+realisation
+recognised
+recognition
+Registrar of Companies
+relevance
+reliability
+replacement cost
+reserves
+residual value
+retained earnings
+retained profit
+return
+return on capital employed
+return on total assets
+return on shareholders' equity
+return
+revaluation reserve
+revenue
+rights issue
+risk
+sales
+sales invoice
+secured loan
+segmental reporting
+share capital
+share certificate
+share premium
+shareholders
+shareholders' funds
+shares
+short-term finance
+sole trader
+specific purpose financial statements
+stakeholders
+statement of changes in equity
+statement of principles
+statement of recognised income and expense
+statement of total recognised gains and losses
+stepped bond
+stewardship
+stock
+stock exchange
+stock holding period
+stock market
+subsidiary company
+substance
+subtotal
+suppliers' payment period
+tangible fixed assets
+timeliness
+total assets usage
+trade creditors
+trade debtors
+trade payables
+trade receivables
+true and fair view
+turnover
+understandability
+unlisted
+unrealised
+unsecured creditors
+unsecured loan
+value to the business
+variance
+working capital
+working capital cycle
+work-in-progress
+written down value
+xero
+accounting software
+accounts software
+quickbooks
+sage
+quicken
+netsuite
+zoho
+business accounting
+business accounts
+company accounts

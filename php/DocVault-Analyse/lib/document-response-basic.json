@@ -1,0 +1,194 @@
+{
+    "non-disclosure agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "promissory note": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "employment agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "bill of sale": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "partnership agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "purchase order": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "non-compete agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "contractor agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "security agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "termination agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "indemnity agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "licensing agreement": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "residential lease": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "power of attorney": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "jury summons": {
+        "resp_header": "This is a summons for jury duty",
+        "resp_text": "You have a legal obligation to attend for legal duty unless you have exemptions. If you'd like, a Pulse lawyer can take a quick look at your circumstances to see if you are exempt.",
+        "resp_action": {
+            "text": "Arrange a Pulse lawyer to help you today",
+            "href": "#"
+        }
+    },
+    "irs examination": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "irs cp2000": {
+        "resp_header": "This is an IRS CP2000 notice",
+        "resp_text": "The Internal Revenue Service believes that your tax return doesn't match their internal records. This is an important letter from the IRS and should not be ignored.\n\nWe can advise you on the next steps you should take to protect your finances and legal status.",
+        "resp_action": {
+            "text": "Learn more about our accountancy advice service",
+            "href": "#"
+        }
+    },
+    "incorporation certificate": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "lease termination": {
+        "resp_header": "This is a lease termination form",
+        "resp_text": "Are you thinking of evicting a tenant? This is the most common way of giving the required legal notice. Don't risk getting it wrong though, as the whole process could be undermined.\n\nOur lawyers are on-hand to help ensure this form is filled correct.",
+        "resp_action": {
+            "text": "Arrange a Pulse lawyer to help you today",
+            "href": "#"
+        }
+    },
+    "irs summons": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "notice of intent to file": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "arbitration subpoena": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "magna carta": {
+        "resp_header": "",
+        "resp_text": "",
+        "resp_action": {
+            "text": "",
+            "href": ""
+        }
+    },
+    "strike off notice": {
+        "resp_header": "This is a Companies House strike-off notice",
+        "resp_text": "Companies House are giving you formal notice that they will strike off your company by a given date. It's important that you take action immediately.",
+        "resp_action": {
+            "text": "Arrange a Pulse lawyer to help you today",
+            "href": "#"
+        }
+    }
+}

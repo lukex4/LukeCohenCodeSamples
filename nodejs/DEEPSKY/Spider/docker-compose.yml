@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nodejs:
+    build: .
+    image: pulseai_nodejs_deepsky
+    container_name: pulseai_nodejs_deepsky
+    restart: always
+    networks:
+      - pulseai_app
+    ports:
+      - "3003:5000"
+    volumes:
+      - ./:/home/node/app
+      - ./node_modules:/home/node/app/node_modules
+
+networks:
+  pulseai_app:
+    driver: bridge

@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  percona-server:
+    image: percona/percona-server:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - /percona_hiproc_data:/var/lib/mysql
+      # bind mount my local my.cnf
+      # - ./my.cnf:/etc/my.cnf.d/my.cnf

@@ -1,0 +1,123 @@
+swagger: "2.0"
+host: tech-2e541341-eval-prod.apigee.net
+basePath: /docvault/v1/
+schemes:
+  - https
+info:
+  title: DocVault-Core API - File Meta
+  version: '1.1'
+paths:
+
+
+
+  /file/meta/list/*:
+    get:
+      summary: 'Lists all available metadata for a given dvKey.'
+      consumes: [application/json]
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey to list metadata for'
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              [
+                {
+                  "dvkey": "DVF-ADFA1A-26C10D-929E3A9E",
+                  "metakey": "meta_1",
+                  "metadata": "example metadata",
+                  "created_at": "2018-11-30 12:09:02",
+                  "updated_at": "2018-11-30 12:09:43"
+                }
+              ]
+
+  /file/meta/get/*/*:
+    get:
+      summary: 'Retrieves the metadata for a given dvKey/metaKey combination.'
+      consumes: [application/json]
+      parameters:
+        - in: path
+          name: dvKey
+          required: true
+          type: string
+          description: 'The dvKey of the metaData being queried'
+        - in: path
+          name: metaKey
+          required: true
+          type: string
+          description: 'The metaKey of the metaData being queried'
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "metadata": {
+                  "dvkey": "DVF-ADFA1A-26C10D-929E3A9E",
+                  "metakey": "meta_1",
+                  "metadata": "overwritten",
+                  "created_at": "2018-11-30 12:09:02",
+                  "updated_at": "2018-11-30 12:09:43"
+                }
+              }
+
+  /file/meta/set:
+    post:
+      summary: 'Create or overwrite a metadata item for a given File.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: MetaSetIntent
+          description: 'The new metadata to be set. The metadata value can hold up to 4gb of data.'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - metaKey
+              - newMetaData
+            properties:
+              dvKey:
+                type: string
+              metaKey:
+                type: string
+              newMetaData:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Metadata created/updated for DVF-ADFA1A-26C10D-929E3A9E:meta_1"
+              }
+
+  /file/meta/delete:
+    delete:
+      summary: 'Deletes a metadata item.'
+      consumes: [application/json]
+      parameters:
+        - in: body
+          name: MetaDeleteIntent
+          description: 'The new status, mime-type, and filename of the new File.'
+          schema:
+            type: object
+            required:
+              - dvKey
+              - metaKey
+            properties:
+              dvKey:
+                type: string
+              metaKey:
+                type: string
+      responses:
+        200:
+          description: OK
+          examples:
+            application/json: |-
+              {
+                "response": "Metadata deleted for DVF-ADFA1A-26C10D-929E3A9E:meta_2"
+              }

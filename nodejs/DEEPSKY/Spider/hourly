@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cd /home/node/app && node s-reddit.js && node s-twitter.js && node log.js

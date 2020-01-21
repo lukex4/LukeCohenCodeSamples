@@ -1,0 +1,16 @@
+
+.fieldDel {
+  display:block;
+  margin-top:8px;
+  color:#FF0000;
+  font-weight:bold;
+}
+
+.fieldDel a {
+  text-decoration:none!important;
+  color:#FF0000!important;
+}
+
+.binding-fields {
+  display:none;
+}

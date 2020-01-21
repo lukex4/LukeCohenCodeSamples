@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+    pulseai_percona:
+        image: percona/percona-server:latest
+        ports:
+            - "3306"
+        restart: always
+        volumes:
+            - ./lib/mysql:/var/lib/mysql
+            - ./log/mysql:/var/log/mysql
+

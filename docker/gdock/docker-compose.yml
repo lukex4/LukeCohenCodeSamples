@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+    app:
+        build: .
+        depends_on:
+            - database
+        volumes:
+            - ./:/var/www
+        ports:
+            - "80:80"
+        environment:
+            DB_HOST: database
+            DB_DATABASE: workspace
+
+    database:
+        image: mysql:5.7
+        volumes:
+            - ./.volumes/db:/var/lib/mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: rootsecret
+            MYSQL_DATABASE: workspace
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret

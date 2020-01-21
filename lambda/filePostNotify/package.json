@@ -1,0 +1,16 @@
+{
+  "name": "filepostnotify",
+  "version": "1.0.0",
+  "description": "### filePostNotify.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "file-type": "^10.0.0",
+    "request": "^2.88.0"
+  }
+}

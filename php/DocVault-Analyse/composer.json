@@ -1,0 +1,6 @@
+{
+    "require": {
+        "davmixcool/php-sentiment-analyzer": "^1.0",
+        "jwhennessey/phpinsight": "^2.0"
+    }
+}
