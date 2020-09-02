@@ -13,7 +13,7 @@
     "awesome-phonenumber": "^2.2.6",
     "body-parser": "^1.18.3",
     "express": "4.16.4",
-    "googleapis": "^35.0.0",
+    "googleapis": "^59.0.0",
     "http": "0.0.0",
     "parse-full-name": "^1.2.3",
     "twilio": "^3.24.0"
